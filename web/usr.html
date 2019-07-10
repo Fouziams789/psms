@@ -1,0 +1,76 @@
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Book my slot</title>
+        <style>
+        body
+        {   
+            background-image: url("car.jpg");
+            background-repeat: no-repeat;
+            background-size:cover;
+            height:500px;
+        }
+        table
+        {
+            background-color: black;
+            opacity:0.8;
+            padding: 15px;
+            border: 1px solid black;
+            color:white;
+            font-family:Lucida Sans Unicode;
+            width: 40%;
+            height:60% ;
+        }
+       div   
+       {
+            padding: 15px;
+            box-sizing:border-box ;
+        }
+        tr{
+            font-family:Gadugi;
+            color: white;
+            font-size: 10pt;
+        }
+        </style>
+    </head>
+    <body>
+        
+    <center><b>BOOK YOUR SLOT HERE</b><div>
+              <form action="usr" method="post">
+                <table>
+               
+                <tr>
+                    <td><b>Vehicle No </b></td>
+                    <td> <input type="text" name="no"></td>
+                </tr>
+                
+                <tr>
+                    <td><b>Arrival time : </b></td>
+                    <td> <input type="text" name="at"></td>
+                </tr>
+                
+                <tr>
+                    <td><b>Departure time : </b></td>
+                    <td> <input type="text" name="dt"></td>
+                </tr>
+                
+               <tr>
+                    <td><b>Vehicle Type</b></td>
+                    <td><select name="Vehicle">
+                        <option value="2-wheeler">2-wheeler</option>
+                        <option value="3-wheeler">3-wheeler</option>
+                        <option value="4-wheeler">4-wheeler</option> 
+                    </select></td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="PARKING SLOT"></td>
+                </tr>
+                 
+            </table>
+            </form></div>
+        </center>
+    </body>
+</html>

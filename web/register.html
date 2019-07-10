@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>REGISTRATION</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--       <script> 
+function check()                                    
+{ 
+    var name = document.forms["RegForm"]["name"];               
+    var email = document.forms["RegForm"]["email"];    
+    var phn = document.forms["RegForm"]["phn"];  
+    var usr =  document.forms["RegForm"]["usr"];  
+    var psd1 = document.forms["RegForm"]["Psd1"]; 
+    var psd2 = document.forms["RegForm"]["Psd2"];
+    var addr = document.forms["RegForm"]["Adr"];  
+    var v1 = document.forms["RegForm"]["v1"];
+    var v2 = document.forms["RegForm"]["v1"];
+   
+    if (name.value.equals(""))                                  
+    { 
+        window.alert("Please enter your name."); 
+        name.focus(); 
+        return false; 
+    } 
+   
+    if (addr.value.equals(""))                               
+    { 
+        window.alert("Please enter your address."); 
+        name.focus(); 
+        return false; 
+    } 
+       
+    if (email.value.equals(""))                                   
+    { 
+        window.alert("Please enter a valid e-mail address."); 
+        email.focus(); 
+        return false; 
+    } 
+   
+    if (email.value.indexOf("@", 0) < 0)                 
+    { 
+        window.alert("Please enter a valid e-mail address."); 
+        email.focus(); 
+        return false; 
+    } 
+   
+    if (email.value.indexOf(".", 0) < 0)                 
+    { 
+        window.alert("Please enter a valid e-mail address."); 
+        email.focus(); 
+        return false; 
+    } 
+   
+    if (phn.value.equals(""))                           
+    { 
+        window.alert("Please enter your telephone number."); 
+        phn.focus(); 
+        return false; 
+    } 
+   
+    if (psd1.value.equals(""))                        
+    { 
+        window.alert("Please enter your password"); 
+        psd1.focus(); 
+        return false; 
+    } 
+    
+    if (psd2.value.equals(""))                        
+    { 
+        window.alert("Please enter your password"); 
+        psd2.focus(); 
+        return false; 
+    }
+    
+    if(!psd1.equals(psd2))
+    {
+        psd1.focus();
+        psd2.focus();
+        return false;
+    }
+   
+    if (usr.value.equals(""))                  
+    { 
+        alert("Please enter your username"); 
+        usr.focus(); 
+        return false; 
+    } 
+   
+    return true; 
+}</script>
+-->
+        <style>
+            body{
+                padding: 20px;
+                background-image: url('pic3.jpg') ;
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
+            table{
+                padding: 8px;
+                width: 550px;
+                height: 300px;
+            }
+            div{
+                background-color: white;
+                opacity: 0.6;
+                padding:15px;  
+                color: rgba(0,0,0,1); 
+                border-radius: 25px; 
+                width: 550px; 
+                height: 500px;
+            }
+            tr{
+                font-family: verdana;
+                font-size: 15pt;
+            }
+            td{
+                padding: 9px;
+            }
+            form{
+                
+                color: black;
+                
+            }
+        </style>
+    </head>
+    <body><center>
+        <div>
+            <form action="reg" method="post">
+                <table>
+                    <tr>
+                    <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;<b>REGISTER HERE!!</b></th>
+                    </tr>
+                    <tr>
+                        <td>Name : </td>
+                        <td><input type="text" name="n" required></td>
+                    </tr>
+                    <tr>
+                        <td>Address : </td>
+                        <td><textarea name="adr" rows="5" cols="10" required>Enter address here...</textarea>
+                    </tr>
+                    <tr>
+                        <td>Phone Number : </td>
+                        <td><input type="number" name="phn" required></td>
+                    </tr>
+                    <tr>
+                        <td>vehicle number plate : </td>
+                        <td><input type="text" name="v1"></td>
+                    </tr>
+                    <tr>
+                    <td>Vehicle Type</td>
+                    <td><select name="Vehicle">
+                         <option name="type" value=""></option>
+                        <option value="2-wheeler">2-wheeler</option>
+                        <option value="3-wheeler">3-wheeler</option>
+                        <option value="4-wheeler">4-wheeler</option>
+                       
+                    </select></td>
+                </tr>
+                    <tr>
+                        <td>Email : </td>
+                        <td><input type="text" name="email" required></td>
+                    </tr>
+                    <tr>
+                        <td>Username : </td>
+                        <td><input type="text" name="n" required></td>
+                    </tr>
+                    <tr>
+                        <td>Password : </td>
+                        <td><input type="password" name="psd1" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="REGISTER"></td>
+                    </tr>
+                </table>
+            </form>
+        </div></center>
+    </body>
+</html>
