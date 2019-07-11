@@ -43,29 +43,48 @@ public class reg extends HttpServlet {
             String usr = request.getParameter("usr");
             String psd = request.getParameter("psd");
             String n = request.getParameter("n");
-            String v1 = request.getParameter("v1");
-            String v2 = request.getParameter("v2");
+            String v = request.getParameter("v");
+            String vt  = request.getParameter("vt");
             String addr = request.getParameter("adr");
             String phn = request.getParameter("phn");
             String email = request.getParameter("email");
             int f=0;
+            
             try 
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) {
-                    query = "SELECT usr FROM users;";
-                    PreparedStatement ps = con.prepareStatement(query);
+                    query = "SELECT * FROM users;";
+                    Statement stmt = con.createStatement();
+                    PreparedStatement ps;
                     //stmt.executeQuery(query);
-                    ResultSet rs = ps.getResultSet();
+                    ResultSet rs = stmt.executeQuery(query);
                     //CREATE TABLE users(name varchar(20) NOT NULL,addr varchar(50) NOT NULL,phone varchar(30) NOT NULL,rn varchar(30) NOT NULL,vt varchar(15) NOT NULL,email varchar(50),usr varchar(40) PRIMARY KEY NOT NULL,psd varchar(18) NOT NULL);
-                    while(rs.next())
+                    if(rs.next()== false)
                     {
-                        dbUsername = rs.getString("usr");
-                        
-                        if(dbUsername.equals(usr)){
-                            f=1;
-                        }
+                       query = "INSERT INTO `users`(`name`, `addr`, `phone`, `rn`, `vt`, `email`, `usr`, `psd`) VALUES (?,?,?,?,?,?,?,?);";
+                        ps = con.prepareStatement(query);
+                        ps.setString(1,n);
+                        ps.setString(2,addr);
+                        ps.setString(3,phn);
+                        ps.setString(4,v);
+                        ps.setString(5,vt);
+                        ps.setString(6,email);
+                        ps.setString(7,usr);
+                        ps.setString(8,psd);
+                        ps.executeUpdate();
+                        out.println("<h3>successfully registered!!</h3>");
+                        out.println("<h3>remember ur username and password</h3>");
+                        request.getRequestDispatcher("login.html").forward(request, response);
                     }
+                    else
+                    {
+                        do
+                        {
+                            dbUsername = rs.getString("usr");
+                            if(dbUsername.equals(usr))
+                                f=1;
+                        }while(rs.next());
                     if(f==1)
                     {
                         out.println("<n3>UserName already exists !!!</h3>");
@@ -78,8 +97,8 @@ public class reg extends HttpServlet {
                         ps.setString(1,n);
                         ps.setString(2,addr);
                         ps.setString(3,phn);
-                        ps.setString(4,v1);
-                        ps.setString(5,v2);
+                        ps.setString(4,v);
+                        ps.setString(5,vt);
                         ps.setString(6,email);
                         ps.setString(7,usr);
                         ps.setString(8,psd);
@@ -87,6 +106,7 @@ public class reg extends HttpServlet {
                         out.println("<h3>successfully registered!!</h3>");
                         out.println("<h3>remember ur username and password</h3>");
                         request.getRequestDispatcher("login.html").forward(request, response);
+                    }
                     }
                 }
             } 
