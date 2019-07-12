@@ -6,10 +6,12 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -37,6 +39,15 @@ public class usr extends HttpServlet {
             out.println("<title>Servlet usr</title>");            
             out.println("</head>");
             out.println("<body>");
+            String vn = request.getParameter("no");
+            String at = request.getParameter("at");
+            String dt = request.getParameter("dt");
+            String vt = request.getParameter("vt");
+            Date now = new Date();
+            HttpSession session = request.getSession();
+            session.setAttribute("uName",request.getParameter("usr"));
+            session.setAttribute("arrival time", "at");
+            session.setAttribute("dt", "30");
             //out.println("<h1>Servlet usr at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
