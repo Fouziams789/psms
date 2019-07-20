@@ -156,16 +156,15 @@ function check()
                     <tr>
                     <td>Vehicle Type</td>
                     <td><select name="vt">
-                         <option name="type" value=""></option>
+                         <option name="type"></option>
                         <option value="2-wheeler">2-wheeler</option>
                         <option value="3-wheeler">3-wheeler</option>
                         <option value="4-wheeler">4-wheeler</option>
-                       
                     </select></td>
                 </tr>
                     <tr>
                         <td>Email : </td>
-                        <td><input type="text" name="email" required></td>
+                        <td><input type="text" name="email" required pattern="(\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)"></td>
                     </tr>
                     <tr>
                         <td>Username : </td>
