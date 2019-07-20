@@ -57,7 +57,8 @@ public class usr extends HttpServlet {
             try 
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) {
+                try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
+                {
                     query = "SELECT * FROM park;";
                     Statement stmt = con.createStatement();
                     PreparedStatement ps;
@@ -66,41 +67,24 @@ public class usr extends HttpServlet {
                     //CREATE TABLE park(pid number AUTOINCREMENT=100 PRIMARY KEY NOT NULL,rn varchar(30),vt varchar(15) NOT NULL,sno integer(10) AUTOINCREMENT);
                     if(rs.next()== false)
                     {
-                       query = "INSERT INTO `park`(`pid`, `vt`,`rn`) VALUES (?,?,?);";
-                        ps = con.prepareStatement(query);
-                        ps.setString(1,rn);
-                        ps.setString(2,vt);
-                        ps.executeUpdate();
-                        out.println("<h3>successfully booked your slot!!</h3>");
-                        out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
+                        out.println("<h3>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
                         request.getRequestDispatcher("success.html").forward(request, response);
                     }
                     else
                     {
-                        do
+                        query = "SELECT vt FROM park WHERE rn=NULL";
+                        rs = stmt.executeQuery(query);
+                        if(rs.getString("vt").equals(vt) && rs.getString("rn")==null)
                         {
-                            dbUsername = rs.getString("usr");
-                            if(dbUsername.equals(usr))
-                                f=1;
-                        }while(rs.next());
-                    if(f==1)
-                    {
-                        out.println("<n3>UserName already exists !!!</h3>");
-                        request.getRequestDispatcher("register.html").include(request, response);
-                    }
-                    else
-                    {
-                        query = "INSERT INTO `users`(`name`, `addr`, `phone`, `rn`, `vt`, `email`, `usr`, `psd`) VALUES (?,?,?,?,?,?,?,?);";
-                        ps = con.prepareStatement(query);
-                        ps.setString(1,n);
-                        ps.setString(2,addr);
-                        ps.setString(3,phn);
-                        ps.setString(4,v);
-                        ps.executeUpdate();
-                        out.println("<h3>successfully registered!!</h3>");
-                        out.println("<h3>remember ur username and password</h3>");
-                        request.getRequestDispatcher("login.html").forward(request, response);
-                    }
+                            query = "INSERT INTO `park`(`rn`) VALUES (?);";
+                            ps = con.prepareStatement(query);
+                            ps.setString(1,rn);
+                            ps.executeUpdate();
+                            out.println("<h3>successfully booked your slot!!</h3>");
+                            out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
+                            out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
+                            request.getRequestDispatcher("success.html").forward(request, response);
+                        }
                     }
                 }
             } 
