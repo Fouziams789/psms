@@ -6,6 +6,12 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,15 +45,69 @@ public class usr extends HttpServlet {
             out.println("<title>Servlet usr</title>");            
             out.println("</head>");
             out.println("<body>");
-            String vn = request.getParameter("no");
+            String rn = request.getParameter("no");
             String at = request.getParameter("at");
             String dt = request.getParameter("dt");
             String vt = request.getParameter("vt");
             Date now = new Date();
+            String query;
+            
             HttpSession session = request.getSession();
-            session.setAttribute("uName",request.getParameter("usr"));
-            session.setAttribute("arrival time", "at");
-            session.setAttribute("dt", "30");
+            session.getAttribute("usr");
+            try 
+            {
+                Class.forName("com.mysql.jdbc.Driver").newInstance();
+                try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) {
+                    query = "SELECT * FROM park;";
+                    Statement stmt = con.createStatement();
+                    PreparedStatement ps;
+                    //stmt.executeQuery(query);
+                    ResultSet rs = stmt.executeQuery(query);
+                    //CREATE TABLE park(pid number AUTOINCREMENT=100 PRIMARY KEY NOT NULL,rn varchar(30),vt varchar(15) NOT NULL,sno integer(10) AUTOINCREMENT);
+                    if(rs.next()== false)
+                    {
+                       query = "INSERT INTO `park`(`pid`, `vt`,`rn`) VALUES (?,?,?);";
+                        ps = con.prepareStatement(query);
+                        ps.setString(1,rn);
+                        ps.setString(2,vt);
+                        ps.executeUpdate();
+                        out.println("<h3>successfully booked your slot!!</h3>");
+                        out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
+                        request.getRequestDispatcher("success.html").forward(request, response);
+                    }
+                    else
+                    {
+                        do
+                        {
+                            dbUsername = rs.getString("usr");
+                            if(dbUsername.equals(usr))
+                                f=1;
+                        }while(rs.next());
+                    if(f==1)
+                    {
+                        out.println("<n3>UserName already exists !!!</h3>");
+                        request.getRequestDispatcher("register.html").include(request, response);
+                    }
+                    else
+                    {
+                        query = "INSERT INTO `users`(`name`, `addr`, `phone`, `rn`, `vt`, `email`, `usr`, `psd`) VALUES (?,?,?,?,?,?,?,?);";
+                        ps = con.prepareStatement(query);
+                        ps.setString(1,n);
+                        ps.setString(2,addr);
+                        ps.setString(3,phn);
+                        ps.setString(4,v);
+                        ps.executeUpdate();
+                        out.println("<h3>successfully registered!!</h3>");
+                        out.println("<h3>remember ur username and password</h3>");
+                        request.getRequestDispatcher("login.html").forward(request, response);
+                    }
+                    }
+                }
+            } 
+            catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e)
+            {
+                out.println(e);
+            }
             //out.println("<h1>Servlet usr at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
