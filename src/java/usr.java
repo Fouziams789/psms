@@ -12,7 +12,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,9 +38,11 @@ public class usr extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.lang.InterruptedException
+     * @throws java.text.ParseException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, InterruptedException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -64,7 +71,7 @@ public class usr extends HttpServlet {
                     PreparedStatement ps;
                     //stmt.executeQuery(query);
                     ResultSet rs = stmt.executeQuery(query);
-                    //CREATE TABLE park(pid number AUTOINCREMENT=100 PRIMARY KEY NOT NULL,rn varchar(30),vt varchar(15) NOT NULL,sno integer(10) AUTOINCREMENT);
+                    //CREATE TABLE park(pid integer AUTO_INCREMENT PRIMARY KEY NOT NULL,rn varchar(30),vt varchar(15) NOT NULL,sno integer(10));
                     if(rs.next()== false)
                     {
                         out.println("<h3>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
@@ -84,6 +91,12 @@ public class usr extends HttpServlet {
                             out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
                             out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
                             request.getRequestDispatcher("success.html").forward(request, response);
+                            DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                            Date a = dateFormat.parse(at);
+                            Date d = dateFormat.parse(dt);
+                            Thread.sleep(60*2);
+                            request.getRequestDispatcher("login.html").forward(request, response);
+                            out.println("<h3>session expired login again and book</h3>");
                         }
                     }
                 }
@@ -110,7 +123,11 @@ public class usr extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (InterruptedException | ParseException ex) {
+            Logger.getLogger(usr.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -124,7 +141,11 @@ public class usr extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (InterruptedException | ParseException ex) {
+            Logger.getLogger(usr.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
