@@ -12,9 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
+//import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,7 +66,7 @@ public class usr extends HttpServlet {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
                 {
-                    query = "SELECT * FROM park;";
+                    query = "SELECT * FROM park WHERE rn IS NULL;";
                     Statement stmt = con.createStatement();
                     PreparedStatement ps;
                     //stmt.executeQuery(query);
@@ -79,24 +79,25 @@ public class usr extends HttpServlet {
                     }
                     else
                     {
-                        query = "SELECT vt FROM park WHERE rn=NULL";
+                        query = "SELECT vt FROM park WHERE rn IS NULL;";
                         rs = stmt.executeQuery(query);
-                        if(rs.getString("vt").equals(vt) && rs.getString("rn")==null)
+                        if(rs.getString("vt").equals(vt))
                         {
                             query = "INSERT INTO `park`(`rn`) VALUES (?);";
                             ps = con.prepareStatement(query);
                             ps.setString(1,rn);
                             ps.executeUpdate();
+                            ps.close();
                             out.println("<h3>successfully booked your slot!!</h3>");
                             out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
                             out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
                             request.getRequestDispatcher("success.html").forward(request, response);
-                            DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                            /*DateFormat dateFormat = new SimpleDateFormat("hh:mm");
                             Date a = dateFormat.parse(at);
                             Date d = dateFormat.parse(dt);
                             Thread.sleep(60*2);
                             request.getRequestDispatcher("login.html").forward(request, response);
-                            out.println("<h3>session expired login again and book</h3>");
+                            out.println("<h3>session expired login again and book</h3>");*/
                         }
                     }
                 }
