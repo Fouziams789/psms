@@ -5,6 +5,10 @@
         <servlet-class>check</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>usr</servlet-name>
+        <servlet-class>usr</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>log</servlet-name>
         <servlet-class>log</servlet-class>
     </servlet>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>reg</servlet-name>
         <url-pattern>/reg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>usr</servlet-name>
+        <url-pattern>/usr</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

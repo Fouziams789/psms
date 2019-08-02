@@ -56,7 +56,7 @@ public class usr extends HttpServlet {
             String at = request.getParameter("at");
             String dt = request.getParameter("dt");
             String vt = request.getParameter("vt");
-            Date now = new Date();
+            //Date now = new Date();
             String query;
             
             HttpSession session = request.getSession();
@@ -98,6 +98,11 @@ public class usr extends HttpServlet {
                             Thread.sleep(60*2);
                             request.getRequestDispatcher("login.html").forward(request, response);
                             out.println("<h3>session expired login again and book</h3>");*/
+                        }
+                        else
+                        {
+                            out.println("<h3>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
+                            request.getRequestDispatcher("success.html").forward(request, response);
                         }
                     }
                 }
