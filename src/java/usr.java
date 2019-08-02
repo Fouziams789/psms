@@ -15,7 +15,7 @@ import java.sql.Statement;
 //import java.text.DateFormat;
 import java.text.ParseException;
 //import java.text.SimpleDateFormat;
-import java.util.Date;
+//import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -56,6 +56,7 @@ public class usr extends HttpServlet {
             String at = request.getParameter("at");
             String dt = request.getParameter("dt");
             String vt = request.getParameter("vt");
+            int f=0;
             //Date now = new Date();
             String query;
             
@@ -79,10 +80,16 @@ public class usr extends HttpServlet {
                     }
                     else
                     {
-                        query = "SELECT vt FROM park WHERE rn IS NULL;";
-                        rs = stmt.executeQuery(query);
-                        if(rs.getString("vt").equals(vt))
+                        query = "SELECT * FROM park WHERE rn IS NULL;";
+                        ResultSet rs2 = stmt.executeQuery(query);
+                        //query = "SELECT vt FROM park WHERE rn IS NULL;";
+                        //rs = stmt.executeQuery(query);
+                        //String a = rs.getString("vt");
+                        while(rs2.next())
                         {
+                         if(rs2.getString("vt").equals(vt))
+                         {
+                            f=1;
                             query = "INSERT INTO `park`(`rn`) VALUES (?);";
                             ps = con.prepareStatement(query);
                             ps.setString(1,rn);
@@ -98,12 +105,14 @@ public class usr extends HttpServlet {
                             Thread.sleep(60*2);
                             request.getRequestDispatcher("login.html").forward(request, response);
                             out.println("<h3>session expired login again and book</h3>");*/
+                         }
                         }
-                        else
+                        if(f==0)
                         {
-                            out.println("<h3>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
-                            request.getRequestDispatcher("success.html").forward(request, response);
+                           out.println("<h3>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
+                           request.getRequestDispatcher("success.html").forward(request, response);
                         }
+                        
                     }
                 }
             } 
