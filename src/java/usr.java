@@ -80,9 +80,10 @@ public class usr extends HttpServlet {
                     }
                     else
                     {
-                        do
+                        query = "SELECT * FROM park WHERE rn IS NULL;";
+                        rs = stmt.executeQuery(query);
+                        while(rs.next()==true)
                         {
-                            rs = stmt.executeQuery(query);
                             vtchk = rs.getString("vt");
                             if(vtchk.equals(vt))
                             {
@@ -105,11 +106,11 @@ public class usr extends HttpServlet {
                                 request.getRequestDispatcher("login.html").forward(request, response);
                                 out.println("<h3>session expired login again and book</h3>");*/
                             }
-                        }while(rs.next());
+                        }
                         
                         if(f==0)
                         {
-                           out.println("<h3>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
+                           out.println("<h3 style='color:black;'>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
                            request.getRequestDispatcher("success.html").forward(request, response);
                         }
                         
