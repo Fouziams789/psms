@@ -83,7 +83,10 @@ public class reg extends HttpServlet {
                         {
                             dbUsername = rs.getString("usr");
                             if(dbUsername.equals(usr))
+                            {
                                 f=1;
+                                break;
+                            }
                         }while(rs.next());
                     if(f==1)
                     {

@@ -59,7 +59,7 @@ public class usr extends HttpServlet {
             int f=0;
             //Date now = new Date();
             String query;
-            
+            String vtchk;
             HttpSession session = request.getSession();
             session.getAttribute("usr");
             try 
@@ -80,33 +80,33 @@ public class usr extends HttpServlet {
                     }
                     else
                     {
-                        query = "SELECT * FROM park WHERE rn IS NULL;";
-                        ResultSet rs2 = stmt.executeQuery(query);
-                        //query = "SELECT vt FROM park WHERE rn IS NULL;";
-                        //rs = stmt.executeQuery(query);
-                        //String a = rs.getString("vt");
-                        while(rs2.next())
+                        do
                         {
-                         if(rs2.getString("vt").equals(vt))
-                         {
-                            f=1;
-                            query = "INSERT INTO `park`(`rn`) VALUES (?);";
-                            ps = con.prepareStatement(query);
-                            ps.setString(1,rn);
-                            ps.executeUpdate();
-                            ps.close();
-                            out.println("<h3>successfully booked your slot!!</h3>");
-                            out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
-                            out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
-                            request.getRequestDispatcher("success.html").forward(request, response);
-                            /*DateFormat dateFormat = new SimpleDateFormat("hh:mm");
-                            Date a = dateFormat.parse(at);
-                            Date d = dateFormat.parse(dt);
-                            Thread.sleep(60*2);
-                            request.getRequestDispatcher("login.html").forward(request, response);
-                            out.println("<h3>session expired login again and book</h3>");*/
-                         }
-                        }
+                            rs = stmt.executeQuery(query);
+                            vtchk = rs.getString("vt");
+                            if(vtchk.equals(vt))
+                            {
+                                f=1;
+                                query = " UPDATE park SET rn=`rn` WHERE rn IS NULL and vt=`vt`;";
+                                ps = con.prepareStatement(query);
+                                ps.setString(1,rn);
+                                ps.executeUpdate();
+                                ps.close();
+                                out.println("<h3>successfully booked your slot!!</h3>");
+                                out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
+                                out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
+                                out.println("<h3>your arrival time is "+at+"\n your departure time is </h3>"+dt);
+                                request.getRequestDispatcher("success.html").forward(request, response);
+                                break;
+                                /*DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                                Date a = dateFormat.parse(at);
+                                Date d = dateFormat.parse(dt);
+                                Thread.sleep(60*2);
+                                request.getRequestDispatcher("login.html").forward(request, response);
+                                out.println("<h3>session expired login again and book</h3>");*/
+                            }
+                        }while(rs.next());
+                        
                         if(f==0)
                         {
                            out.println("<h3>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
