@@ -51,27 +51,44 @@ public class log extends HttpServlet {
             query = "SELECT usr,psd FROM users;";
             stmt.executeQuery(query);
             ResultSet rs = stmt.getResultSet();
-               int f=0;
-            while(rs.next()){
+            HttpSession session;
+               int f=0; //FLAG SETTING TO FIND THE USERS
+            while(rs.next())
+            {
                 dbUsername = rs.getString("usr");
                 dbPassword = rs.getString("psd");
-
-                if(dbUsername.equals(username) && dbPassword.equals(password)){
+                if(dbUsername.equals("ADMIN") && dbPassword.equals(password))
+                {
+                    f=2;
+                }
+                else if(dbUsername.equals(username) && dbPassword.equals(password))
+                {
                     f=1;
                 }
             }
-                if(f==1)
-                {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("usr",request.getParameter("usr"));
-                    out.println("<h3>Successfully logged in</h3>");
-                    request.getRequestDispatcher("usr.html").forward(request, response);
-                }
-                else
-                {
-                    out.println("<center><h3 style='color: white;font-size:30px;'>Invalid password or username!!!!</h3></center>");
-                    request.getRequestDispatcher("login.html").include(request, response);
-                }
+            //CHECK FOR USERS    
+            switch (f) 
+            {
+                        //user login
+                case 1:
+                        session = request.getSession();
+                        session.setAttribute("usr",request.getParameter("usr"));
+                        request.getRequestDispatcher("usr.html").forward(request, response);
+                        break;
+                        
+                        //admin login
+                case 2:                        
+                        session = request.getSession();
+                        session.setAttribute("usr",request.getParameter("usr"));
+                        request.getRequestDispatcher("ADMIN").forward(request, response);
+                        break;
+                        
+                        //invalid login
+                default:
+                        out.println("<center><h3 style='color: white;font-size:30px;'>Invalid password or username!!!!</h3></center>");
+                        request.getRequestDispatcher("login.html").include(request, response);
+                        break;
+            }
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
             out.println(e);
     }

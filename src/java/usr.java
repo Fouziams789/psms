@@ -85,19 +85,21 @@ public class usr extends HttpServlet {
                         while(rs.next()==true)
                         {
                             vtchk = rs.getString("vt");
+                            out.println(vtchk);
                             if(vtchk.equals(vt))
                             {
                                 f=1;
-                                query = " UPDATE park SET rn=`rn` WHERE rn IS NULL and vt=`vt`;";
+                                query = " UPDATE park SET rn=? WHERE rn IS NULL and vt=?;";
                                 ps = con.prepareStatement(query);
                                 ps.setString(1,rn);
+                                ps.setString(2,vtchk);
                                 ps.executeUpdate();
                                 ps.close();
                                 out.println("<h3>successfully booked your slot!!</h3>");
                                 out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
                                 out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
                                 out.println("<h3>your arrival time is "+at+"\n your departure time is </h3>"+dt);
-                                request.getRequestDispatcher("success.html").forward(request, response);
+                                request.getRequestDispatcher("success.html").include(request, response);
                                 break;
                                 /*DateFormat dateFormat = new SimpleDateFormat("hh:mm");
                                 Date a = dateFormat.parse(at);
@@ -111,7 +113,7 @@ public class usr extends HttpServlet {
                         if(f==0)
                         {
                            out.println("<h3 style='color:black;'>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
-                           request.getRequestDispatcher("success.html").forward(request, response);
+                           request.getRequestDispatcher("usr.html").include(request, response);
                         }
                         
                     }
