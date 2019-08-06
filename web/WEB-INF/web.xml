@@ -21,8 +21,20 @@
         <servlet-class>ADMIN</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UPDATE</servlet-name>
+        <servlet-name>UPDATESLOT</servlet-name>
         <servlet-class>UPDATESLOT</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UPDATEUSER</servlet-name>
+        <servlet-class>UPDATEUSER</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DELETESLOT</servlet-name>
+        <servlet-class>DELETESLOT</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DELETEUSER</servlet-name>
+        <servlet-class>DELETEUSER</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>check</servlet-name>
@@ -44,9 +56,22 @@
         <servlet-name>ADMIN</servlet-name>
         <url-pattern>/ADMIN</url-pattern>
     </servlet-mapping>
+    
     <servlet-mapping>
-        <servlet-name>UPDATE</servlet-name>
-        <url-pattern>/UPDATE</url-pattern>
+        <servlet-name>UPDATEUSER</servlet-name>
+        <url-pattern>/UPDATEUSER</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DELETESLOT</servlet-name>
+        <url-pattern>/DELETESLOT</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DELETEUSER</servlet-name>
+        <url-pattern>/DELETEUSER</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UPDATESLOT</servlet-name>
+        <url-pattern>/UPDATESLOT</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

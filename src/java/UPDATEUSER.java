@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ucmol
  */
-public class ADMIN extends HttpServlet {
+public class UPDATEUSER extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,45 +38,46 @@ public class ADMIN extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>ADMIN PORTAL</title>");            
+            out.println("<title>Servlet UPDATE</title>");            
             out.println("</head>");
             out.println("<body>");
+            PreparedStatement ps;
+            String query = "SELECT * FROM user;";
+            String usr = request.getParameter("usr");
+            String psd = request.getParameter("psd");
+            String n = request.getParameter("n");
+            String v = request.getParameter("v");
+            String vt  = request.getParameter("vt");
+            String addr = request.getParameter("adr");
+            String phn = request.getParameter("phn");
+            String email = request.getParameter("email");
             try 
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
                 {
                     Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery("select * from users");
-                    out.println("<table border=1 width=50% height=50%>");
-                    out.println("<tr><th>USERS</th><th>ADDRESS</th><th>PHONE</th><th>REGISTERATION NUMBER</th><th>VEHICLE TYPE</th><th>EMAIL</th><th>USERNAME</th><th>PASSWORD</th><th>                             </th><tr>");
-                    int i=0;
-                    while (rs.next())
-                    {
-                        i++;
-                        //String s = rs.getString("usr");
-                       
-                        out.println("<tr id='user'+i><td>" + rs.getString("name") + "</td><td>" + rs.getString("addr") + "</td><td>" +
-                                rs.getString("phone") + "</td><td>" + rs.getString("rn") + "</td><td>" + rs.getString("vt") + "</td><td>" +
-                                rs.getString("email") + "</td><td>" + rs.getString("usr") + "</td><td>" + rs.getString("psd") + "</td><td><a id='edit'+i href='UPDATEUSER.html'>edit</a> <a href='DELETEUSER?pid='s''>delete</a></td></tr>");
-                    }
-                    out.println("</table>");
-                    rs = stmt.executeQuery("select * from park");
-                    out.println("<table border=1 width=50% height=50%>");
-                    out.println("<tr><th>PARK ID</th><th>REG NO</th><th>VEHICLE TYPE</th><th>SLOT NO</th><th>                     </th><tr>");
-                    i=0;
-                    while (rs.next())
-                    {
-                        i++;
-                        String s = rs.getString("pid");
-                        out.println(s);
-                        out.println("<tr id='park'+i><td>" + rs.getString("pid") + "</td><td>" + rs.getString("rn") + "</td><td>" + rs.getString("vt") + "</td><td>" + rs.getString("sno") + "</td><td><a id='edit'+i href='UPDATESLOT?pid=<%=s%>'>edit</a> <a href='DELETESLOT'>delete</a></td></tr>");
-                    }
-                    out.println("</table>");                }
-            } catch (InstantiationException | IllegalAccessException | SQLException ex) {
+                    ResultSet rs = stmt.executeQuery(query);
+                    query = " UPDATE users SET name=?, addr=?, phone=?, rn=?, vt=?, email=?  WHERE usr=? AND psd=?;";
+                        ps = con.prepareStatement(query);
+                        ps.setString(1,n);
+                        ps.setString(2,addr);
+                        ps.setString(3,phn);
+                        ps.setString(4,v);
+                        ps.setString(5,vt);
+                        ps.setString(6,email);
+                        ps.setString(7,usr);
+                        ps.setString(8,psd);
+                        ps.executeUpdate();
+                    out.println("updated successfully");
+                    request.getRequestDispatcher("ADMIN").include(request, response);
+                } 
+            }
+            catch (InstantiationException | IllegalAccessException | SQLException ex) 
+            {
                 out.println(ex);
             }
-            //out.println("<h1>Servlet ADMIN at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UPDATE at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -97,7 +98,7 @@ public class ADMIN extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ADMIN.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UPDATESLOT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -115,7 +116,7 @@ public class ADMIN extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ADMIN.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UPDATESLOT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

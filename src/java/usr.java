@@ -85,28 +85,74 @@ public class usr extends HttpServlet {
                         while(rs.next()==true)
                         {
                             vtchk = rs.getString("vt");
-                            out.println(vtchk);
-                            if(vtchk.equals(vt))
+                            if(vtchk.equals(vt) && vtchk.equals("two-wheeler"))
                             {
-                                f=1;
-                                query = " UPDATE park SET rn=? WHERE rn IS NULL and vt=?;";
-                                ps = con.prepareStatement(query);
-                                ps.setString(1,rn);
-                                ps.setString(2,vtchk);
-                                ps.executeUpdate();
-                                ps.close();
-                                out.println("<h3>successfully booked your slot!!</h3>");
-                                out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
-                                out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
-                                out.println("<h3>your arrival time is "+at+"\n your departure time is </h3>"+dt);
-                                request.getRequestDispatcher("success.html").include(request, response);
+                                
+                                //int tww=1;
+                                //if(tww<=20)
+                                //{
+                                    f=1;
+                                    query = " UPDATE park SET rn=? WHERE rn IS NULL and vt=? and pid=?;";
+                                    ps = con.prepareStatement(query);
+                                    ps.setString(1,rn);
+                                    ps.setString(2,vtchk);
+                                    ps.setInt(3,rs.getInt("pid"));
+                                    ps.executeUpdate();
+                                    ps.close();
+                                    out.println("<h3>successfully booked your slot!!</h3>");
+                                    out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
+                                    out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
+                                    out.println("<h3>your arrival time is "+at+"\n your departure time is "+dt+"</h3>");
+                                    request.getRequestDispatcher("success.html").include(request, response);
+                                    //tww++;
+                                //}
                                 break;
-                                /*DateFormat dateFormat = new SimpleDateFormat("hh:mm");
-                                Date a = dateFormat.parse(at);
-                                Date d = dateFormat.parse(dt);
-                                Thread.sleep(60*2);
-                                request.getRequestDispatcher("login.html").forward(request, response);
-                                out.println("<h3>session expired login again and book</h3>");*/
+                            }
+                            else if(vtchk.equals(vt) && vtchk.equals("three-wheeler"))
+                            {
+                                
+                                //int thw=11;
+                                //if(thw<=20)
+                                //{
+                                    f=1;
+                                    query = " UPDATE park SET rn=? WHERE rn IS NULL and vt=? and pid=?;";
+                                    ps = con.prepareStatement(query);
+                                    ps.setString(1,rn);
+                                    ps.setString(2,vtchk);
+                                    ps.setInt(3,rs.getInt("pid"));
+                                    ps.executeUpdate();
+                                    ps.close();
+                                    out.println("<h3>successfully booked your slot!!</h3>");
+                                    out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
+                                    out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
+                                    out.println("<h3>your arrival time is "+at+"\n your departure time is "+dt+"</h3>");
+                                    request.getRequestDispatcher("success.html").include(request, response);
+                                    //thw++;
+                                //}
+                                break;
+                            }
+                            else if(vtchk.equals(vt) && vtchk.equals("four-wheeler"))
+                            {
+                                
+                                //int fow=21;
+                                //if(fow<=30)
+                                //{
+                                    f=1;
+                                    query = " UPDATE park SET rn=? WHERE rn IS NULL and vt=? and pid=?;";
+                                    ps = con.prepareStatement(query);
+                                    ps.setString(1,rn);
+                                    ps.setString(2,vtchk);
+                                    ps.setInt(3,rs.getInt("pid"));
+                                    ps.executeUpdate();
+                                    ps.close();
+                                    out.println("<h3>successfully booked your slot!!</h3>");
+                                    out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
+                                    out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
+                                    out.println("<h3>your arrival time is "+at+"\n your departure time is "+dt+"</h3>");
+                                    request.getRequestDispatcher("success.html").include(request, response);
+                                    //fow++;
+                                //}
+                                break;
                             }
                         }
                         
