@@ -84,7 +84,10 @@ public class UPDATEUSER extends HttpServlet {
                         ps.close();
                         
                     out.println("updated successfully");
-                    request.getRequestDispatcher("ADMIN").include(request, response);
+                    if(usr.equals("ADMIN"))
+                        request.getRequestDispatcher("ADMIN").include(request, response);
+                    else
+                        request.getRequestDispatcher("usr.html").include(request, response);
                 } 
             }
             catch (InstantiationException | IllegalAccessException | SQLException ex) 

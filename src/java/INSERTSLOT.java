@@ -60,7 +60,10 @@ public class INSERTSLOT extends HttpServlet {
                     String query = "UPDATE park SET rn = NULL WHERE pid=?";
                     ps = con.prepareStatement(query);
                     ps.setString(1,pid);
-                    ps.executeUpdate();                                    //REGNO OF SLOT WITH CORRESPONDING PARK ID IS SET NULL
+                    if(ps.executeUpdate()==1)                                    //REGNO OF SLOT WITH CORRESPONDING PARK ID IS SET NULL
+                    {
+                        f=1;
+                    }
                     ps.close();                                            //i.e., AVAILABLE TO BOOKING
                     
                     //CHECKING WHETHER UPDATES SUCCESSFULLY OR NOT
