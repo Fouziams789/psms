@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -46,18 +47,20 @@ public class DELETEUSER extends HttpServlet {
             out.println("<title>Servlet DELETEUSER</title>");            
             out.println("</head>");
             out.println("<body>");
+            
             try 
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
                 {
                     PreparedStatement ps;
-                    String usr = request.getParameter("usr");       //USER NAME TO BE DELETED
+                    String usrn = request.getParameter("usr");       //USER NAME TO BE DELETED
                     int f=0;                                        //FLAG TO CHECK UPDATES
                     Statement stmt = con.createStatement();
-                    String query = "SELECT * FROM park WHERE usr="+usr+";";
+                    String query = "SELECT * FROM users WHERE usr='"+usrn+"';";
                     ResultSet rs = stmt.executeQuery(query);
-                    String curusr = request.getParameter("usr");
+                    HttpSession session = request.getSession(false);
+                    String curusr = (String)session.getAttribute("usr");
                     
                     if(curusr.equals("ADMIN"))
                     {
@@ -68,7 +71,7 @@ public class DELETEUSER extends HttpServlet {
                             query = "DELETE FROM users WHERE usr=?";
                             ps = con.prepareStatement(query);
                             
-                            ps.setString(1,usr);
+                            ps.setString(1,usrn);
                             ps.executeUpdate(); 
                         
                             ps.close();
@@ -82,7 +85,7 @@ public class DELETEUSER extends HttpServlet {
                         }
                         else
                         {
-                            out.println("<h1 style='color:red;'>ERROR IN UPDATING"+usr+"</h1>");
+                            out.println("<h1 style='color:red;'>ERROR IN UPDATING"+usrn+"</h1>");
                             request.getRequestDispatcher("ADMIN").include(request, response);
                         }
                     }
@@ -95,7 +98,7 @@ public class DELETEUSER extends HttpServlet {
                             query = "DELETE FROM users WHERE usr=?";
                             ps = con.prepareStatement(query);
                             
-                            ps.setString(1,usr);
+                            ps.setString(1,usrn);
                             ps.executeUpdate(); 
                         
                             ps.close();
@@ -109,7 +112,7 @@ public class DELETEUSER extends HttpServlet {
                         }
                         else
                         {
-                            out.println("<h1 style='color:red;'>ERROR IN UPDATING"+usr+"</h1>");
+                            out.println("<h1 style='color:red;'>ERROR IN UPDATING"+usrn+"</h1>");
                             request.getRequestDispatcher("usr").include(request, response);
                         }
                     }
@@ -121,7 +124,7 @@ public class DELETEUSER extends HttpServlet {
                 out.println(ex);
             } 
             
-            out.println("<h1>Servlet DELETEUSER at " + request.getContextPath() + "</h1>");
+            //out.println("<h1>Servlet DELETEUSER at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
