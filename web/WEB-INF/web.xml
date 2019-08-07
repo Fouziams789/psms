@@ -36,6 +36,14 @@
         <servlet-name>DELETEUSER</servlet-name>
         <servlet-class>DELETEUSER</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>INSERTSLOT</servlet-name>
+        <servlet-class>INSERTSLOT</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LOGOUTSERVLET</servlet-name>
+        <servlet-class>LOGOUTSERVLET</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>check</servlet-name>
         <url-pattern>/check</url-pattern>
@@ -56,7 +64,6 @@
         <servlet-name>ADMIN</servlet-name>
         <url-pattern>/ADMIN</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>UPDATEUSER</servlet-name>
         <url-pattern>/UPDATEUSER</url-pattern>
@@ -72,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>UPDATESLOT</servlet-name>
         <url-pattern>/UPDATESLOT</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>INSERTSLOT</servlet-name>
+        <url-pattern>/INSERTSLOT</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LOGOUTSERVLET</servlet-name>
+        <url-pattern>/LOGOUTSERVLET</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

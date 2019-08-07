@@ -16,6 +16,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author KHSCI5MCA17025
  */
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------
+-                                              SERVLET FOR REGISTRATION                                                         -
+---------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
 public class reg extends HttpServlet {
 
     /**
@@ -38,8 +46,11 @@ public class reg extends HttpServlet {
             out.println("<title>Servlet reg</title>");            
             out.println("</head>");
             out.println("<body>");
+            
+            //VARIABLES  
             String query;
             String dbUsername;
+                                                                                //FETCHING VALUES FROM REGISTER.HTML
             String usr = request.getParameter("usr");
             String psd = request.getParameter("psd");
             String n = request.getParameter("n");
@@ -48,22 +59,29 @@ public class reg extends HttpServlet {
             String addr = request.getParameter("adr");
             String phn = request.getParameter("phn");
             String email = request.getParameter("email");
-            int f=0;
+                                                                                //DB VARIABLES
+            ResultSet rs;
+            PreparedStatement ps;
+            
+            int f=0;                                                            //FLAG SETTER
             
             try 
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) {
+                try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
+                {
                     query = "SELECT * FROM users;";
                     Statement stmt = con.createStatement();
-                    PreparedStatement ps;
-                    //stmt.executeQuery(query);
-                    ResultSet rs = stmt.executeQuery(query);
+                    rs = stmt.executeQuery(query);
+                    
                     //CREATE TABLE users(name varchar(20) NOT NULL,addr varchar(50) NOT NULL,phone varchar(30) NOT NULL,rn varchar(30) NOT NULL,vt varchar(15) NOT NULL,email varchar(50),usr varchar(40) PRIMARY KEY NOT NULL,psd varchar(18) NOT NULL);
+                    
+                    //CHECKING IF FIRST REGISTERATION
                     if(rs.next()== false)
                     {
-                       query = "INSERT INTO `users`(`name`, `addr`, `phone`, `rn`, `vt`, `email`, `usr`, `psd`) VALUES (?,?,?,?,?,?,?,?);";
+                        query = "INSERT INTO `users`(`name`, `addr`, `phone`, `rn`, `vt`, `email`, `usr`, `psd`) VALUES (?,?,?,?,?,?,?,?);";
                         ps = con.prepareStatement(query);
+                        
                         ps.setString(1,n);
                         ps.setString(2,addr);
                         ps.setString(3,phn);
@@ -73,43 +91,50 @@ public class reg extends HttpServlet {
                         ps.setString(7,usr);
                         ps.setString(8,psd);
                         ps.executeUpdate();
+                        
                         out.println("<h3>successfully registered!!</h3>");
                         out.println("<h3>remember ur username and password</h3>");
                         request.getRequestDispatcher("login.html").forward(request, response);
                     }
-                    else
+                    //IF NOT FIRST REGISTERATION
+                    else            
                     {
+                        //CHECKING IF THE USERNAME ALDREADY EXIST
                         do
                         {
                             dbUsername = rs.getString("usr");
                             if(dbUsername.equals(usr))
                             {
-                                f=1;
+                                f=1;                                            //SETTING FLAG IF USERNAME ALDREADY EXISTS
                                 break;
                             }
                         }while(rs.next());
-                    if(f==1)
-                    {
-                        out.println("<n3>UserName already exists !!!</h3>");
-                        request.getRequestDispatcher("register.html").include(request, response);
-                    }
-                    else
-                    {
-                        query = "INSERT INTO `users`(`name`, `addr`, `phone`, `rn`, `vt`, `email`, `usr`, `psd`) VALUES (?,?,?,?,?,?,?,?);";
-                        ps = con.prepareStatement(query);
-                        ps.setString(1,n);
-                        ps.setString(2,addr);
-                        ps.setString(3,phn);
-                        ps.setString(4,v);
-                        ps.setString(5,vt);
-                        ps.setString(6,email);
-                        ps.setString(7,usr);
-                        ps.setString(8,psd);
-                        ps.executeUpdate();
-                        out.println("<h3>successfully registered!!</h3>");
-                        out.println("<h3>remember ur username and password</h3>");
-                        request.getRequestDispatcher("login.html").forward(request, response);
-                    }
+                        
+                        //PRINTING ERROR IF ALDREADY EXISTS
+                        if(f==1)
+                        {
+                            out.println("<n3>UserName already exists !!!</h3>");
+                            request.getRequestDispatcher("register.html").include(request, response);
+                        }
+                        else
+                        {
+                            query = "INSERT INTO `users`(`name`, `addr`, `phone`, `rn`, `vt`, `email`, `usr`, `psd`) VALUES (?,?,?,?,?,?,?,?);";
+                            ps = con.prepareStatement(query);
+                            
+                            ps.setString(1,n);
+                            ps.setString(2,addr);
+                            ps.setString(3,phn);
+                            ps.setString(4,v);
+                            ps.setString(5,vt);
+                            ps.setString(6,email);
+                            ps.setString(7,usr);
+                            ps.setString(8,psd);
+                            ps.executeUpdate();
+                            
+                            out.println("<h3>successfully registered!!</h3>");
+                            out.println("<h3>remember ur username and password</h3>");
+                            request.getRequestDispatcher("login.html").forward(request, response);
+                        }
                     }
                 }
             } 

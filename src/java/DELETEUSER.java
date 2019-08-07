@@ -10,11 +10,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author KHSCI5MCA17025
  */
+/*
+---------------------------------------------------------------------------------------------------------------------------------
+-                                               SERVLET TO DELETE USER                                                          -
+---------------------------------------------------------------------------------------------------------------------------------
+*/
 public class DELETEUSER extends HttpServlet {
 
     /**
@@ -25,9 +33,10 @@ public class DELETEUSER extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.lang.ClassNotFoundException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -37,6 +46,81 @@ public class DELETEUSER extends HttpServlet {
             out.println("<title>Servlet DELETEUSER</title>");            
             out.println("</head>");
             out.println("<body>");
+            try 
+            {
+                Class.forName("com.mysql.jdbc.Driver").newInstance();
+                try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
+                {
+                    PreparedStatement ps;
+                    String usr = request.getParameter("usr");       //USER NAME TO BE DELETED
+                    int f=0;                                        //FLAG TO CHECK UPDATES
+                    Statement stmt = con.createStatement();
+                    String query = "SELECT * FROM park WHERE usr="+usr+";";
+                    ResultSet rs = stmt.executeQuery(query);
+                    String curusr = request.getParameter("usr");
+                    
+                    if(curusr.equals("ADMIN"))
+                    {
+                        //LOOP FOR DELETING USER
+                        while(rs.next())
+                        {
+                            f=1;                                         //SETTING FLAG TO 1-- ENSURE SUCCESSFULL UPDATE
+                            query = "DELETE FROM users WHERE usr=?";
+                            ps = con.prepareStatement(query);
+                            
+                            ps.setString(1,usr);
+                            ps.executeUpdate(); 
+                        
+                            ps.close();
+                        }
+                    
+                        //CHECK WHETHER USER DELETED OR NOT
+                        if(f==1)
+                        {
+                            out.println("user deleted successfully");
+                            request.getRequestDispatcher("ADMIN").include(request, response);
+                        }
+                        else
+                        {
+                            out.println("<h1 style='color:red;'>ERROR IN UPDATING"+usr+"</h1>");
+                            request.getRequestDispatcher("ADMIN").include(request, response);
+                        }
+                    }
+                    else
+                    {
+                        //LOOP FOR DELETING USER
+                        while(rs.next())
+                        {
+                            f=1;                                         //SETTING FLAG TO 1-- ENSURE SUCCESSFULL UPDATE
+                            query = "DELETE FROM users WHERE usr=?";
+                            ps = con.prepareStatement(query);
+                            
+                            ps.setString(1,usr);
+                            ps.executeUpdate(); 
+                        
+                            ps.close();
+                        }
+                    
+                        //CHECK WHETHER USER DELETED OR NOT
+                        if(f==1)
+                        {
+                            out.println("user deleted successfully");
+                            request.getRequestDispatcher("login.html").include(request, response);
+                        }
+                        else
+                        {
+                            out.println("<h1 style='color:red;'>ERROR IN UPDATING"+usr+"</h1>");
+                            request.getRequestDispatcher("usr").include(request, response);
+                        }
+                    }
+                    
+                } 
+            }
+            catch (InstantiationException | IllegalAccessException | SQLException ex) 
+            {
+                out.println(ex);
+            } 
+            
             out.println("<h1>Servlet DELETEUSER at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
@@ -55,7 +139,11 @@ public class DELETEUSER extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DELETEUSER.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -69,7 +157,11 @@ public class DELETEUSER extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DELETEUSER.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -16,15 +16,17 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author KHSCI5MCA17025
+ * @author ucmol
  */
+
 /*
 ---------------------------------------------------------------------------------------------------------------------------------
--                                          SERVLET TO INACTIVATE THE SLOT                                                       -
+-                                          SERVLET TO ACTIVATE THE SLOT                                                       -
 ---------------------------------------------------------------------------------------------------------------------------------
 */
 
-public class DELETESLOT extends HttpServlet {
+
+public class INSERTSLOT extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,7 +46,7 @@ public class DELETESLOT extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DELETESLOT</title>");            
+            out.println("<title>Servlet INSERTSLOT</title>");            
             out.println("</head>");
             out.println("<body>");
             try 
@@ -53,45 +55,33 @@ public class DELETESLOT extends HttpServlet {
                 try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
                 {
                     PreparedStatement ps;
-                    String pid = request.getParameter("pid");       //PARK ID TO BE INACTIVATED
-                    int f=0;                                        //FLAG TO CHECK UPDATES
-                    Statement stmt = con.createStatement();
-                    String query = "SELECT * FROM park WHERE pid="+pid+";";
-                    ResultSet rs = stmt.executeQuery(query);
+                    String pid = request.getParameter("pid");              //ID OF SLOT TO BE ACTIVATED FROM ADMIN.JAVA
+                    int f=0;                                               //FLAG TO CHECK UPDATE
+                    String query = "UPDATE park SET rn = NULL WHERE pid=?";
+                    ps = con.prepareStatement(query);
+                    ps.setString(1,pid);
+                    ps.executeUpdate();                                    //REGNO OF SLOT WITH CORRESPONDING PARK ID IS SET NULL
+                    ps.close();                                            //i.e., AVAILABLE TO BOOKING
                     
-                    //LOOP FOR ACTIVATING SLOT
-                    while(rs.next())
-                    {
-                        f=1;                                         //SETTING FLAG TO 1 ENSURE SUCCESSFULL UPDATE
-                        query = "UPDATE park SET rn='NOT AVAILABLE' WHERE pid=?";
-                        ps = con.prepareStatement(query);
-                        ps.setString(1,pid);
-                        ps.executeUpdate(); 
-                        ps.close();
-                    }
-                    
-                    //CHECK WHETHER SLOT IS INACTIVATED OR NOT
+                    //CHECKING WHETHER UPDATES SUCCESSFULLY OR NOT
                     if(f==1)
                     {
-                        out.println("deleted successfully");
+                        out.println("updated successfully");
                         request.getRequestDispatcher("ADMIN").include(request, response);
                     }
                     else
-                    {
+                    {   
                         out.println("<h1 style='color:red;'>ERROR IN UPDATING"+pid+"</h1>");
-                        //out.println(pid);
                         request.getRequestDispatcher("ADMIN").include(request, response);
                     }
+                }
                     
-                } 
-            }
+            } 
             catch (InstantiationException | IllegalAccessException | SQLException ex) 
             {
-                out.println(ex);
+                 out.println(ex);
             }
-            
-            
-            //out.println("<h1>Servlet DELETESLOT at " + request.getContextPath() + "</h1>");
+            //out.println("<h1>Servlet INSERTSLOT at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -112,7 +102,7 @@ public class DELETESLOT extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DELETESLOT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(INSERTSLOT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -130,7 +120,7 @@ public class DELETESLOT extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DELETESLOT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(INSERTSLOT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

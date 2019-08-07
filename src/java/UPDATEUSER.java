@@ -18,6 +18,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ucmol
  */
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------
+-                                          SERVLET TO UPDATE USER DETAILS                                                       -
+---------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
 public class UPDATEUSER extends HttpServlet {
 
     /**
@@ -41,24 +49,28 @@ public class UPDATEUSER extends HttpServlet {
             out.println("<title>Servlet UPDATE</title>");            
             out.println("</head>");
             out.println("<body>");
-            PreparedStatement ps;
-            String query = "SELECT * FROM user;";
-            String usr = request.getParameter("usr");
-            String psd = request.getParameter("psd");
-            String n = request.getParameter("n");
-            String v = request.getParameter("v");
-            String vt  = request.getParameter("vt");
-            String addr = request.getParameter("adr");
-            String phn = request.getParameter("phn");
-            String email = request.getParameter("email");
+            
+            //FETCHING DATA FROM UPDATEUSER.HTML
+            
+            String usr = request.getParameter("usr");                   //UNIQUE USERNAME
+            String psd = request.getParameter("psd");                   //UNIQUE PASSWORD
+            String n = request.getParameter("n");                       //NAME
+            String v = request.getParameter("v");                       //REG NUMBER
+            String vt  = request.getParameter("vt");                    //VEHICLE TYPE
+            String addr = request.getParameter("adr");                  //ADDRESS
+            String phn = request.getParameter("phn");                   //PHONE
+            String email = request.getParameter("email");               //EMAIL
+            
+            
             try 
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
                 {
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery(query);
-                    query = " UPDATE users SET name=?, addr=?, phone=?, rn=?, vt=?, email=?  WHERE usr=? AND psd=?;";
+                    
+                    PreparedStatement ps;
+                    String query = " UPDATE users SET name=?, addr=?, phone=?, rn=?, vt=?, email=?  WHERE usr=? AND psd=?;";
+                    
                         ps = con.prepareStatement(query);
                         ps.setString(1,n);
                         ps.setString(2,addr);
@@ -68,7 +80,9 @@ public class UPDATEUSER extends HttpServlet {
                         ps.setString(6,email);
                         ps.setString(7,usr);
                         ps.setString(8,psd);
-                        ps.executeUpdate();
+                        ps.executeUpdate();                         //UPDATING THE DB BASED ON USERNAME AND PASSWORD
+                        ps.close();
+                        
                     out.println("updated successfully");
                     request.getRequestDispatcher("ADMIN").include(request, response);
                 } 

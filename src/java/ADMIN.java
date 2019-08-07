@@ -13,11 +13,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ucmol
  */
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------
+-                                               SERVLET FOR ADMIN PAGE                                                          -
+---------------------------------------------------------------------------------------------------------------------------------
+*/
+
 public class ADMIN extends HttpServlet {
 
     /**
@@ -47,33 +55,61 @@ public class ADMIN extends HttpServlet {
                 try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
                 {
                     Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery("select * from users");
+                    ResultSet rs ;
+                    rs= stmt.executeQuery("select * from users");
+                    HttpSession session = request.getSession();
+                    String usr = session.getAttribute("usr").toString();
+                    
+                    //PRINT USER TABLE
                     out.println("<table border=1 width=50% height=50%>");
                     out.println("<tr><th>USERS</th><th>ADDRESS</th><th>PHONE</th><th>REGISTERATION NUMBER</th><th>VEHICLE TYPE</th><th>EMAIL</th><th>USERNAME</th><th>PASSWORD</th><th>                             </th><tr>");
-                    int i=0;
+                    
+                    int i=0;                                            //VALUE TO ADD INORDER TO SET UNIQUE ID's FOR HTML LINKS 
                     while (rs.next())
                     {
-                        i++;
-                        //String s = rs.getString("usr");
-                       
+                        
+                        i++;                                            //INCREMENTING ID VALUE
+                        String s = rs.getString("usr");                 //FETCHING USERNAME TO PASS TO SERVLETS
+
+                        //PRINT EACH ROW
                         out.println("<tr id='user'+i><td>" + rs.getString("name") + "</td><td>" + rs.getString("addr") + "</td><td>" +
-                                rs.getString("phone") + "</td><td>" + rs.getString("rn") + "</td><td>" + rs.getString("vt") + "</td><td>" +
-                                rs.getString("email") + "</td><td>" + rs.getString("usr") + "</td><td>" + rs.getString("psd") + "</td><td><a id='edit'+i href='UPDATEUSER.html'>edit</a> <a href='DELETEUSER?pid='s''>delete</a></td></tr>");
+                            rs.getString("phone") + "</td><td>" + rs.getString("rn") + "</td><td>" + rs.getString("vt") + "</td><td>" +
+                            rs.getString("email") + "</td><td>" + rs.getString("usr") + "</td><td>" + rs.getString("psd") + "</td>"+
+                            "<td><a id='edit"+i+"' href='UPDATEUSER.html'>edit</a> <a href='DELETEUSER?usr="+s+"'>delete</a></td></tr>");
+                                 //SETTING UNIQUE ID                               //PASSING VALUE TO DELETE USER
+                                 
                     }
                     out.println("</table>");
+                    
                     rs = stmt.executeQuery("select * from park");
+                    
+                    //PRINT PARK TABLE
                     out.println("<table border=1 width=50% height=50%>");
                     out.println("<tr><th>PARK ID</th><th>REG NO</th><th>VEHICLE TYPE</th><th>SLOT NO</th><th>                     </th><tr>");
-                    i=0;
+                    
+                    i=0;                                                //VALUE TO ADD INORDER TO SET UNIQUE ID's FOR HTML LINKS
                     while (rs.next())
                     {
-                        i++;
-                        String s = rs.getString("pid");
+                        //PRINT EACH ROW
+                        i++;                                            //INCREMENTING ID VALUE 
+                        int s = rs.getInt("pid");
                         out.println(s);
-                        out.println("<tr id='park'+i><td>" + rs.getString("pid") + "</td><td>" + rs.getString("rn") + "</td><td>" + rs.getString("vt") + "</td><td>" + rs.getString("sno") + "</td><td><a id='edit'+i href='UPDATESLOT?pid=<%=s%>'>edit</a> <a href='DELETESLOT'>delete</a></td></tr>");
+                        out.println("<tr id='park'+i><td>" + rs.getString("pid") + "</td><td>" + rs.getString("rn") + "</td><td>" + rs.getString("vt") + "</td><td>" + rs.getString("sno") + "</td> <td><a id='edit'+i href='UPDATESLOT?pid="+s+"'>edit</a> <a href='DELETESLOT?pid="+s+"'>delete</a></td></tr>");
+                        if(rs.getString("rn").equals("NULL"))
+                        {
+                            out.println("<td><a id='act"+i+"' href='INSERTSLOT?pid="+s+"'>activate</a><a id='edit"+i+"' href='UPDATEUSER.html'>edit</a> <a id='delete"+i+"' href='DELETEUSER?usr="+s+"'>delete</a></td></tr>");
+                        }
+                        else
+                        {
+                            out.println("<td><a id='edit"+i+"' href='UPDATEUSER.html'>edit</a> <a id='delete"+i+"' href='DELETESLOT?usr="+s+"'>delete</a></td></tr>");
+                        }
                     }
-                    out.println("</table>");                }
-            } catch (InstantiationException | IllegalAccessException | SQLException ex) {
+                    out.println("</table>");   
+                
+                }
+            } 
+            catch (InstantiationException | IllegalAccessException | SQLException ex)
+            {
                 out.println(ex);
             }
             //out.println("<h1>Servlet ADMIN at " + request.getContextPath() + "</h1>");

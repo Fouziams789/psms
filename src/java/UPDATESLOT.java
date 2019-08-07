@@ -18,6 +18,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ucmol
  */
+
+/*
+---------------------------------------------------------------------------------------------------------------------------------
+-                                          SERVLET TO SET A SLOT(rn) TO NULL                                                    -
+---------------------------------------------------------------------------------------------------------------------------------
+*/
 public class UPDATESLOT extends HttpServlet {
 
     /**
@@ -41,38 +47,29 @@ public class UPDATESLOT extends HttpServlet {
             out.println("<title>Servlet UPDATE</title>");            
             out.println("</head>");
             out.println("<body>");
-            PreparedStatement ps;
-            String pid = request.getParameter("pid");
-            int f=0;
-            //String rn = request.getParameter("rn");
-            //String vt = request.getParameter("vt");
-            //String sno = request.getParameter("sno");
+            
             try 
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
                 {
-                    out.println(pid);
-                    //out.println(rn);
-                    //out.println(vt);
-                    //out.println(sno);
-                    //out.println(ex);
+                    PreparedStatement ps;
+                    String pid = request.getParameter("pid");           //PARK ID TO UPDATE CORRESPONDING SLOT
+                    int f=0;
                     Statement stmt = con.createStatement();
-                    
-                    String query = "SELECT * FROM park WHERE pid='pid'";
+                    String query = "SELECT * FROM park WHERE pid="+pid+";";
                     ResultSet rs = stmt.executeQuery(query);
+                    
                     while(rs.next())
                     {
-                        f=1;
+                        f=1;                                            //SETTING FLAG IF UPDATE IS DONE
                         query = "UPDATE park SET rn = NULL WHERE pid=?";
                         ps = con.prepareStatement(query);
                         ps.setString(1,pid);
-                        //ps.setString(2,rn);
-                        //ps.setString(3,vt);
-                        //ps.setString(4,pid);
                         ps.executeUpdate(); 
                         ps.close();
                     }
+                    //CHECKING WHETHER UPDATED OR NOT
                     if(f==1)
                     {
                         out.println("updated successfully");
@@ -91,6 +88,8 @@ public class UPDATESLOT extends HttpServlet {
             {
                 out.println(ex);
             }
+            
+            
             //out.println("<h1>Servlet UPDATESLOT at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
