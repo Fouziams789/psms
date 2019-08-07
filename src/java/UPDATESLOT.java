@@ -44,7 +44,7 @@ public class UPDATESLOT extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UPDATE</title>");            
+            out.println("<title>UPDATION</title>");            
             out.println("</head>");
             out.println("<body>");
             

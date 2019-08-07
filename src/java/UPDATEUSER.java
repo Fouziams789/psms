@@ -60,16 +60,37 @@ public class UPDATEUSER extends HttpServlet {
             String addr = request.getParameter("adr");                  //ADDRESS
             String phn = request.getParameter("phn");                   //PHONE
             String email = request.getParameter("email");               //EMAIL
-            
-            
+            ResultSet rs;
+            Statement stmt;
+            String query;
+            int f=0;                                                    //FLAG SETTER
+            String dbUsername;
+            String dbPassword;
+                    
             try 
             {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/psms", "root", "")) 
                 {
+                    stmt = (Statement) con.createStatement();
+                    query = "SELECT usr,psd FROM users;";                               //query to get username and paswrd
+                    stmt.executeQuery(query);
+                    rs = stmt.getResultSet();
+                    while(rs.next())
+                    {
+                        dbUsername = rs.getString("usr");
+                        dbPassword = rs.getString("psd");
+                        if(dbUsername.equals(usr) && dbPassword.equals(psd))            //CHECKING IF USER EXIST
+                        {
+                            f=1;                                                        //FLAG SET TO IDENTIFY USER AS ADMIN
+                            break;
+                        }
+                    }
                     
-                    PreparedStatement ps;
-                    String query = " UPDATE users SET name=?, addr=?, phone=?, rn=?, vt=?, email=?  WHERE usr=? AND psd=?;";
+                    if(f==1)
+                    {
+                        PreparedStatement ps;
+                        query = " UPDATE users SET name=?, addr=?, phone=?, rn=?, vt=?, email=?  WHERE usr=? AND psd=?;";
                     
                         ps = con.prepareStatement(query);
                         ps.setString(1,n);
@@ -83,18 +104,24 @@ public class UPDATEUSER extends HttpServlet {
                         ps.executeUpdate();                         //UPDATING THE DB BASED ON USERNAME AND PASSWORD
                         ps.close();
                         
-                    out.println("updated successfully");
-                    if(usr.equals("ADMIN"))
-                        request.getRequestDispatcher("ADMIN").include(request, response);
+                        out.println("updated successfully");
+                        if(usr.equals("ADMIN"))
+                            request.getRequestDispatcher("ADMIN").include(request, response);
+                        else
+                            request.getRequestDispatcher("usr.html").include(request, response);
+                    }
                     else
-                        request.getRequestDispatcher("usr.html").include(request, response);
+                    {
+                        out.println("<h3>invalid username or password.....!!!</h3>");
+                        request.getRequestDispatcher("UPDATEUSER.html").include(request, response);
+                    }
                 } 
             }
             catch (InstantiationException | IllegalAccessException | SQLException ex) 
             {
                 out.println(ex);
             }
-            out.println("<h1>Servlet UPDATE at " + request.getContextPath() + "</h1>");
+            //out.println("<h1>Servlet UPDATE at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

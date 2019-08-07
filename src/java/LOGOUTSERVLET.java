@@ -40,14 +40,14 @@ public class LOGOUTSERVLET extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             HttpSession session = request.getSession(true);
-            Enumeration attrname = session.getAttributeNames();     //to get all attributes associated with the session
-            while (attrname.hasMoreElements())                      //destroy session
-            {
-                String name = (String)attrname.nextElement();
-                String value = session.getAttribute(name).toString();
+            //Enumeration attrname = session.getAttributeNames();     //to get all attributes associated with the session
+           // while (attrname.hasMoreElements())                      //destroy session
+            //{
+                //String name = (String)attrname.nextElement();
+                //String value = session.getAttribute(name).toString();
                 session.invalidate();
-                System.out.println(name+"="+value+"cleared");
-            }
+                //System.out.println(name+"="+value+"cleared");
+            //}
             out.println("<center><h1>LOGGED OUT SUCCESSFULLY.........</h1>\n<a href='login.html' style='color:blue;'>GO BACK TO LOGIN</a> </center>");
             out.println("</body>");
             out.println("</html>");
