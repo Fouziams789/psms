@@ -60,7 +60,7 @@ public class ADMIN extends HttpServlet {
                     ResultSet rs ;
                     rs= stmt.executeQuery("select * from users");
                     HttpSession session = request.getSession(); 
-                    session.setAttribute("usr","admin");
+                    session.setAttribute("usr",request.getParameter("usr"));
                     
                     out.println("<div><table border=1 width=50% height=50%>");
                     out.println("<tr><th>USERS</th><th>ADDRESS</th><th>PHONE</th><th>REGISTERATION NUMBER</th><th>VEHICLE TYPE</th><th>EMAIL</th><th>USERNAME</th><th>PASSWORD</th><th>                             </th><tr>");
