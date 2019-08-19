@@ -57,9 +57,10 @@ public class usr extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet usr</title>");            
+            out.println("<title>Servlet usr</title>"); 
+            out.println("<style>div.div1{background-color: white; opacity: 0.6; width:280px; padding:15px;  color: rgba(0,0,0,1); border-radius: 25px;}</style>");
             out.println("</head>");
-            out.println("<body>");
+            out.println("<body><div id='div1'>");
                                                                                 //FETCHINGVALUES FORM 
             String rn = request.getParameter("no");
             String at = request.getParameter("at");
@@ -115,7 +116,8 @@ public class usr extends HttpServlet {
                                 out.println("<h3>successfully booked your slot!!</h3>");
                                 out.println("<h3>your parking ID is "+rs.getInt("pid")+"</h3>");
                                 out.println("<h3>your slot number is "+rs.getInt("sno")+"</h3>");
-                                out.println("<h3>your arrival time is "+at+"\n your departure time is "+dt+"</h3>");
+                                out.println("<h3>your arrival time is "+at+"</h3>");
+                                out.println("<h3> your departure time is "+dt+"</h3>");
                                 request.getRequestDispatcher("success.html").include(request, response);
                                 break;
                             }
@@ -135,7 +137,8 @@ public class usr extends HttpServlet {
                                 out.println("<h3>successfully booked your slot!!</h3>");
                                 out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
                                 out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
-                                out.println("<h3>your arrival time is "+at+"\n your departure time is "+dt+"</h3>");
+                                out.println("<h3>your arrival time is "+at+"</h3>");
+                                out.println("<h3> your departure time is "+dt+"</h3>");
                                 request.getRequestDispatcher("success.html").include(request, response);
                                 break;
                             }
@@ -155,15 +158,16 @@ public class usr extends HttpServlet {
                                 out.println("<h3>successfully booked your slot!!</h3>");
                                 out.println("<h3>your parking ID is</h3>"+rs.getInt("pid"));
                                 out.println("<h3>your slot number is</h3>"+rs.getInt("sno"));
-                                out.println("<h3>your arrival time is "+at+"\n your departure time is "+dt+"</h3>");
+                                out.println("<h3>your arrival time is "+at+"</h3>");
+                                out.println("<h3> your departure time is "+dt+"</h3>");
                                 request.getRequestDispatcher("success.html").include(request, response);
                                 break;
                             }
                         }
-                        
+                        out.println("</div>");
                         if(f==0)                                                //CHECKING FLAG (SLOT PRESENT / NOT)
                         {
-                           out.println("<h3 style='color:black;'>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
+                           out.println("<div id='div2'><h3 style='color:black;'>OOPSS!!! SORRY NO SLOTS ARE AVAILABLE!!</h3>");
                            request.getRequestDispatcher("usr.html").include(request, response);
                         }
                         
@@ -175,7 +179,7 @@ public class usr extends HttpServlet {
                 out.println(e);
             }
             //out.println("<h1>Servlet usr at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
+            out.println("</div></body>");
             out.println("</html>");
         }
     }

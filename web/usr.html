@@ -37,8 +37,8 @@
     </head>
     <body>
         <div>
-            <a href="UPDATEUSER.html" TARGET="self">UPDATE</a>
-            <a href="LOGOUTSERVLET" TARGET="self">LOGOUT</a>
+            <a href="UPDATEUSER.html" TARGET="main">UPDATE</a>
+            <a href="LOGOUTSERVLET" TARGET="main">LOGOUT</a>
         </div>  
     <center><b>BOOK YOUR SLOT HERE</b><div>
               <form action="usr" method="post" >
@@ -46,17 +46,17 @@
                
                 <tr>
                     <td><b>Vehicle No </b></td>
-                    <td> <input type="text" name="no"></td>
+                    <td> <input type="text" name="no" pattern="[A-Z]{2}\s[0-9|\s]{1,2}\s[A-Z|\s]{1,2}\s[0-9]{1,4}" required></td>
                 </tr>
                 
                 <tr>
                     <td><b>Arrival time : </b></td>
-                    <td> <input type="text" name="at"></td>
+                    <td> <input type="text" name="at" required></td>
                 </tr>
                 
                 <tr>
                     <td><b>Departure time : </b></td>
-                    <td> <input type="text" name="dt"></td>
+                    <td> <input type="text" name="dt" required></td>
                 </tr>
                 
                <tr>

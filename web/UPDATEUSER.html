@@ -21,7 +21,10 @@ and open the template in the editor.
                 width: 550px;
                 height: 300px;
             }
-            div{
+            div.div1{
+                
+            }
+            div.div2{
                 background-color: white;
                 opacity: 0.6;
                 padding:15px;  
@@ -45,12 +48,12 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <div>
-            <a href="usr.html" TARGET="self">BOOK SLOT</a>
-            <a href="LOGOUTSERVLET" TARGET="self">LOGOUT</a>
+        <div id="div1">
+            <a href="usr.html" TARGET="main">BOOK SLOT</a>
+            <a href="LOGOUTSERVLET" TARGET="main">LOGOUT</a>
         </div>
     <center>
-        <div>
+        <div id="div2">
             <form action="UPDATEUSER" method="post">
                 <table>
                     <tr>
@@ -70,7 +73,7 @@ and open the template in the editor.
                     </tr>
                     <tr>
                         <td>vehicle number plate : </td>
-                        <td><input type="text" name="v" ></td>
+                        <td><input type="text" name="v" pattern="[A-Z]{2}\s[0-9|\s]{1,2}\s[A-Z|\s]{1,2}\s[0-9]{1,4}" ></td>
                     </tr>
                     <tr>
                     <td>Vehicle Type</td>
